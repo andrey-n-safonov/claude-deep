@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Claude Code wrapper for DeepSeek API
+
+CONF="${XDG_CONFIG_HOME:-$HOME/.config}/claude-deep/env"
+[[ -f "$CONF" ]] && source "$CONF"
+
+if [[ -z "$DEEPSEEK_API_KEY" ]]; then
+    echo "Error: DEEPSEEK_API_KEY not set. Run install.sh or set it in $CONF" >&2
+    exit 1
+fi
+
+export ANTHROPIC_BASE_URL="${DEEPSEEK_BASE_URL:-https://api.deepseek.com/anthropic}"
+export ANTHROPIC_API_KEY="$DEEPSEEK_API_KEY"
+export ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro
+export ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash-no-reasoner
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash-no-reasoner
+export CLAUDE_CODE_EFFORT_LEVEL=max
+
+exec claude "$@"
