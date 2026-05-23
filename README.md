@@ -47,6 +47,24 @@ DEEPSEEK_API_KEY=sk-...
 
 To update the key, re-run `install.sh` or edit the file directly.
 
+### Proxy
+
+Claude Code makes a hardcoded connectivity check to `api.anthropic.com` on startup regardless of `ANTHROPIC_BASE_URL`. If Anthropic's servers are not directly reachable, set an HTTP proxy (Node.js does not support SOCKS5 in `HTTPS_PROXY`):
+
+```bash
+HTTPS_PROXY=http://127.0.0.1:8118
+NO_PROXY=api.deepseek.com
+```
+
+If you only have a SOCKS5 proxy, put [Privoxy](https://www.privoxy.org/) in front of it:
+
+```bash
+# /etc/privoxy/config — add:
+forward-socks5t / 127.0.0.1:1081 .
+```
+
+Then point `HTTPS_PROXY` to Privoxy (`http://127.0.0.1:8118`). DeepSeek API traffic goes direct via `NO_PROXY`.
+
 ## How it works
 
 `claude-deep` sets `ANTHROPIC_BASE_URL` to DeepSeek's Anthropic-compatible endpoint and maps Claude model tiers to DeepSeek equivalents via `ANTHROPIC_DEFAULT_*` env vars. Claude Code itself is unmodified.
