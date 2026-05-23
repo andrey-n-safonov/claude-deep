@@ -9,8 +9,12 @@ Run [Claude Code](https://claude.ai/code) backed by [DeepSeek](https://platform.
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) installed (`claude` in PATH)
 - DeepSeek API key — get one at [platform.deepseek.com](https://platform.deepseek.com/)
+- [Claude Code](https://claude.ai/code) CLI (`claude` in PATH):
+
+  ```bash
+  curl -fsSL -x [http|socks5://proxy:port] https://claude.ai/install.sh | bash
+  ```
 
 ## Install
 
