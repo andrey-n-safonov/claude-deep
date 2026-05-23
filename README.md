@@ -1,33 +1,48 @@
 # claude-deep
 
-Claude Code wrapper for DeepSeek API.
+Run [Claude Code](https://claude.ai/code) backed by [DeepSeek](https://platform.deepseek.com/) models instead of Anthropic's API. Same CLI, different (cheaper) inference.
 
-Запускает `claude` с DeepSeek-моделями вместо Anthropic:
-- **deepseek-v4-pro** — основной агент (Opus/Sonnet tier)
-- **deepseek-v4-flash-no-reasoner** — субагенты и Haiku-задачи
+| Claude Code role | Model |
+|---|---|
+| Main agent (Opus/Sonnet) | `deepseek-v4-pro` |
+| Subagents & fast tasks (Haiku) | `deepseek-v4-flash-no-reasoner` |
 
-## Установка
+## Requirements
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/ansafonov/claude-deep/main/install.sh | bash
-```
+- [Claude Code](https://claude.ai/code) installed (`claude` in PATH)
+- DeepSeek API key — get one at [platform.deepseek.com](https://platform.deepseek.com/)
 
-Скрипт спросит DeepSeek API key и сохранит в `~/.config/claude-deep/env`.
-
-**Требования:** `python3`, `claude` (Claude Code CLI)
-
-## Использование
+## Install
 
 ```bash
-claude-deep                    # интерактивный режим
-claude-deep -p "вопрос"        # одиночный запрос
+curl -fsSL https://raw.githubusercontent.com/andrey-n-safonov/claude-deep/main/install.sh | bash
 ```
 
-## Конфиг
+The script will:
+1. Download `claude-deep` to `~/bin/`
+2. Prompt for your DeepSeek API key
+3. Save it to `~/.config/claude-deep/env` (mode 600)
 
-`~/.config/claude-deep/env`:
+## Usage
+
+```bash
+claude-deep           # interactive session
+claude-deep -p "..."  # one-shot prompt
+```
+
+All `claude` flags work as usual.
+
+## Configuration
+
+`~/.config/claude-deep/env` is sourced at startup:
 
 ```bash
 DEEPSEEK_API_KEY=sk-...
-# DEEPSEEK_BASE_URL=https://api.deepseek.com/anthropic  # по умолчанию
+# DEEPSEEK_BASE_URL=https://api.deepseek.com/anthropic  # default
 ```
+
+To update the key, re-run `install.sh` or edit the file directly.
+
+## How it works
+
+`claude-deep` sets `ANTHROPIC_BASE_URL` to DeepSeek's Anthropic-compatible endpoint and maps Claude model tiers to DeepSeek equivalents via `ANTHROPIC_DEFAULT_*` env vars. Claude Code itself is unmodified.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="https://raw.githubusercontent.com/ansafonov/claude-deep/main"
+REPO_URL="https://raw.githubusercontent.com/andrey-n-safonov/claude-deep/main"
 BIN_DIR="${HOME}/bin"
 CONF_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/claude-deep"
 CONF_FILE="$CONF_DIR/env"
@@ -12,8 +12,7 @@ warn()    { echo -e "${YELLOW}⚠${NC} $*"; }
 err()     { echo -e "${RED}✗${NC} $*" >&2; exit 1; }
 
 # Зависимости
-command -v python3 >/dev/null 2>&1 || err "python3 не найден"
-command -v claude  >/dev/null 2>&1 || err "claude (Claude Code) не найден. Установи: https://claude.ai/code"
+command -v claude >/dev/null 2>&1 || err "claude (Claude Code) не найден. Установи: https://claude.ai/code"
 
 # Скачиваем бинарники
 info "Скачиваю скрипты в $BIN_DIR ..."
@@ -31,11 +30,11 @@ fi
 mkdir -p "$CONF_DIR"
 if [[ -f "$CONF_FILE" ]] && grep -q "DEEPSEEK_API_KEY=" "$CONF_FILE" 2>/dev/null; then
     warn "Конфиг уже существует: $CONF_FILE"
-    read -rp "Перезаписать? [y/N] " ans
+    read -rp "Перезаписать? [y/N] " ans </dev/tty
     [[ "$ans" =~ ^[Yy]$ ]] || { info "Установка завершена (ключ не изменён)."; exit 0; }
 fi
 
-read -rp "DeepSeek API key (sk-...): " api_key
+read -rp "DeepSeek API key (sk-...): " api_key </dev/tty
 [[ -z "$api_key" ]] && err "Ключ не введён"
 
 cat > "$CONF_FILE" <<EOF
